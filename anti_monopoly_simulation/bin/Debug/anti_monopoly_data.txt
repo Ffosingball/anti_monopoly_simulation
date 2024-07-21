@@ -1,0 +1,40 @@
+0,Unpurchasable,Start,,0
+1,Street,New Orleans,Basin St,60
+2,Check,Competitor or Monopolist,,0
+3,Street,New Orleans,French Quarter,60
+4,Unpurchasable,Income Tax,,0
+5,Street,Transport,U.S. Railroad,200
+6,Street,Los Angeles,Sunset Blvd.,100
+7,Check,Competitor or Monopolist,,0
+8,Street,Los Angeles,Whilshire Blvd.,100
+9,Street,Los Angeles,Hollywood Blvd.,120
+10,Unpurchasable,Prison,,0
+11,Street,Chicago,Rush st.,140
+12,Street,Company,U.S. Electric Company,150
+13,Street,Chicago,State st.,140
+14,Street,Chicago,Michigan Ave.,160
+15,Street,Transport,U.S. Bus Copany,200
+16,Street,Philadelphia,Locust st.,180
+17,Check,Competitor or Monopolist,,0
+18,Street,Philadelphia,Chestnut st.,180
+19,Street,Philadelphia,Walnut st.,200
+20,Unpurchasable,Anti Monopoly,,0
+21,Street,Boston,Brattle st.,220
+22,Check,Competitor or Monopolist,,0
+23,Street,Boston,Harvard Sq.,220
+24,Street,Boston,Beacon st.,240
+25,Street,Transport,U.S. Air Line,200
+26,Street,Washington,Georgetown,260
+27,Street,Washington,Constitution Ave.,260
+28,Street,Company,U.S. Gas Company,150
+29,Street,Washington,Pennsylvania,280
+30,Unpurchasable,Go to Prison,,0
+31,Street,San Francisco,Fishermans Wharf,300
+32,Street,San Francisco,Union Square,300
+33,Check,Competitor or Monopolist,,0
+34,Street,San Francisco,Nob Hill,320
+35,Street,Transport,U.S. Trucking Company,200
+36,Check,Competitor or Monopolist,,0
+37,Street,New York,Fifth Ave.,350
+38,Unpurchasable,Property Tax,,0
+39,Street,New York,Wall st.,400

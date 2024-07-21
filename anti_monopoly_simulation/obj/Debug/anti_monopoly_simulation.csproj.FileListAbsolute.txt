@@ -1,0 +1,7 @@
+K:\Andrii\Мои проекты\anti_monopoly_simulation\anti_monopoly_simulation\bin\Debug\anti_monopoly_simulation.exe.config
+K:\Andrii\Мои проекты\anti_monopoly_simulation\anti_monopoly_simulation\bin\Debug\anti_monopoly_simulation.exe
+K:\Andrii\Мои проекты\anti_monopoly_simulation\anti_monopoly_simulation\bin\Debug\anti_monopoly_simulation.pdb
+K:\Andrii\Мои проекты\anti_monopoly_simulation\anti_monopoly_simulation\obj\Debug\anti_monopoly_simulation.csproj.AssemblyReference.cache
+K:\Andrii\Мои проекты\anti_monopoly_simulation\anti_monopoly_simulation\obj\Debug\anti_monopoly_simulation.csproj.CoreCompileInputs.cache
+K:\Andrii\Мои проекты\anti_monopoly_simulation\anti_monopoly_simulation\obj\Debug\anti_monopoly_simulation.exe
+K:\Andrii\Мои проекты\anti_monopoly_simulation\anti_monopoly_simulation\obj\Debug\anti_monopoly_simulation.pdb
