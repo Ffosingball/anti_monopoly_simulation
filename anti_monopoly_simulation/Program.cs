@@ -34,6 +34,8 @@ namespace anti_monopoly_simulation
 
         public void outputStreets()
         {
+            Console.WriteLine("Streets has: ");
+
             if (streetsOwned.Count == 0)
             {
                 Console.WriteLine("None streets owned");
@@ -46,7 +48,7 @@ namespace anti_monopoly_simulation
                 }
             }
 
-            Console.WriteLine("Streets mortgaged^ ");
+            Console.WriteLine("Streets mortgaged: ");
 
             if (streetsMortgaged.Count == 0)
             {
@@ -93,7 +95,7 @@ namespace anti_monopoly_simulation
 
         static void readFile()
         {
-            Console.WriteLine("readFile");
+            //Console.WriteLine("readFile");
 
             streets = new Street[40];
 
@@ -111,7 +113,7 @@ namespace anti_monopoly_simulation
 
         static void outputStreetData()
         {
-            Console.WriteLine("outputStreetData");
+            //Console.WriteLine("outputStreetData");
 
             for (int i = 0; i < streets.Length; i++)
             {
@@ -120,9 +122,9 @@ namespace anti_monopoly_simulation
         }
 
 
-        static void checkDice()
+        /*static void checkDice()
         {
-            Console.WriteLine("checkDice");
+            //Console.WriteLine("checkDice");
 
             Console.WriteLine("Input how much times through a dice: ");
             int n = int.Parse(Console.ReadLine());
@@ -139,17 +141,17 @@ namespace anti_monopoly_simulation
                 int n2 = i + 2;
                 Console.WriteLine(n2 + ": " + nGets[i]);
             }
-        }
+        }*/
 
 
         static void checkPlayers()
         {
-            Console.WriteLine("checkPlayers");
+            //Console.WriteLine("checkPlayers");
 
             for (int i = 0; i < players.Length; i++)
             {
-                Console.WriteLine(i + ". position: " + players[i].position + "; type: " + players[i].type + "; balance: " + players[i].balance + "; bankrupted: " + players[i].bankrupted + "; imprisoned: " + players[i].imprisoned + "; circles done: " + players[i].circlesDone + "; totally houses bought: " + players[i].totHousesBought + "; totally houses sold: " + players[i].totHousesSold);
-                Console.WriteLine("Streets has: ");
+                Console.WriteLine("-----");
+                Console.WriteLine("Player "+i + ") position: " + players[i].position + "; type: " + players[i].type + "; balance: " + players[i].balance + "; bankrupted: " + players[i].bankrupted + "; imprisoned: " + players[i].imprisoned + "; circles done: " + players[i].circlesDone + "; totally houses bought: " + players[i].totHousesBought + "; totally houses sold: " + players[i].totHousesSold);
                 players[i].outputStreets();
             }
         }
@@ -157,14 +159,14 @@ namespace anti_monopoly_simulation
 
         static int throughDice()
         {
-            Console.WriteLine("throughDice");
+            //Console.WriteLine("throughDice");
             return rand.Next(1, 7);
         }
 
 
         static void initializePlayers(int pAmount, int cAmount)
         {
-            Console.WriteLine("initializePlayer");
+            //Console.WriteLine("initializePlayer");
 
             int cAdded = 0, mAdded = 0;
 
@@ -196,15 +198,15 @@ namespace anti_monopoly_simulation
         }
 
 
-        /*static void checkTransport()
+        static void checkTransport()
         {
             
-        }*/
+        }
 
 
         static void withdrawMoney(int amount, int playerNum)
         {
-            Console.WriteLine("withdrawMoney " + amount);
+            //Console.WriteLine("withdrawMoney " + amount);
 
             players[playerNum].balance = players[playerNum].balance - amount;
 
@@ -212,7 +214,6 @@ namespace anti_monopoly_simulation
             {
                 while (players[playerNum].balance < 0)
                 {
-                    Console.WriteLine("  ");
                     if (players[playerNum].streetsOwned.Count > 0)
                     {
                         int earning = 999;
@@ -233,16 +234,14 @@ namespace anti_monopoly_simulation
                         {
                             if (players[playerNum].houses[minN] > 0)
                             {
-                                Console.WriteLine("Choosed 1 " + minN);
                                 int level = (players[playerNum].streetsOwned[minN].number / 10) + 1;
                                 players[playerNum].balance = players[playerNum].balance + (players[playerNum].houses[minN] * 50 * level) / 2;
-                                players[playerNum].totHousesSold = players[playerNum].houses[minN];
+                                players[playerNum].totHousesSold = players[playerNum].totHousesSold+ players[playerNum].houses[minN];
                                 players[playerNum].houses[minN] = 0;
                                 players[playerNum].streetsOwned[minN].houses = 0;
                             }
                             else
                             {
-                                Console.WriteLine("Choosed 2 " + minN);
                                 players[playerNum].balance = players[playerNum].balance + (players[playerNum].streetsOwned[minN].cost / 2);
                                 players[playerNum].streetsMortgaged.Add(players[playerNum].streetsOwned[minN]);
                                 players[playerNum].streetsOwned[minN].mortgaged = true;
@@ -255,10 +254,9 @@ namespace anti_monopoly_simulation
                         {
                             if (players[playerNum].houses[minN] > 0)
                             {
-                                Console.WriteLine("Choosed 3 " + minN);
                                 int level = (players[playerNum].streetsOwned[minN].number / 10) + 1;
                                 players[playerNum].balance = players[playerNum].balance + (players[playerNum].houses[minN] * 50 * level) / 2;
-                                players[playerNum].totHousesSold = players[playerNum].houses[minN];
+                                players[playerNum].totHousesSold = players[playerNum].totHousesSold+ players[playerNum].houses[minN];
                                 players[playerNum].houses[minN] = 0;
                                 players[playerNum].streetsOwned[minN].houses = 0;
                             }
@@ -267,7 +265,6 @@ namespace anti_monopoly_simulation
                                 int sameType = 0, t = -1;
                                 for (int i = 0; i < players[playerNum].streetsOwned.Count; i++)
                                 {
-                                    Console.WriteLine(i + ")  " + players[playerNum].streetsOwned[i].type + "  " + players[playerNum].streetsOwned[minN].type);
                                     if (players[playerNum].streetsOwned[i].type == players[playerNum].streetsOwned[minN].type && i != minN)
                                     {
                                         sameType++;
@@ -275,23 +272,19 @@ namespace anti_monopoly_simulation
 
                                     }
                                 }
-                                Console.WriteLine("sameType: " + sameType);
 
                                 if (sameType == 1)
                                 {
-                                    Console.WriteLine(minN + "=" + players[playerNum].houses[minN] + "  " + t + "=" + players[playerNum].houses[t]);
                                     if (players[playerNum].houses[t] > 0)
                                     {
-                                        Console.WriteLine("Choosed 4 " + t);
                                         int level = (players[playerNum].streetsOwned[t].number / 10) + 1;
                                         players[playerNum].balance = players[playerNum].balance + (players[playerNum].houses[t] * 50 * level) / 2;
-                                        players[playerNum].totHousesSold = players[playerNum].houses[t];
+                                        players[playerNum].totHousesSold = players[playerNum].totHousesSold+ players[playerNum].houses[t];
                                         players[playerNum].houses[t] = 0;
                                         players[playerNum].streetsOwned[t].houses = 0;
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Choosed 5 " + t);
                                         players[playerNum].balance = players[playerNum].balance + (players[playerNum].streetsOwned[minN].cost / 2);
                                         players[playerNum].streetsOwned[minN].monopolized = false;
                                         players[playerNum].streetsOwned[t].monopolized = false;
@@ -303,7 +296,6 @@ namespace anti_monopoly_simulation
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Choosed 6 " + minN);
                                     players[playerNum].balance = players[playerNum].balance + (players[playerNum].streetsOwned[minN].cost / 2);
                                     players[playerNum].streetsOwned[minN].monopolized = false;
                                     players[playerNum].streetsMortgaged.Add(players[playerNum].streetsOwned[minN]);
@@ -319,8 +311,6 @@ namespace anti_monopoly_simulation
                         players[playerNum].bankrupted = true;
                         break;
                     }
-
-                    Console.WriteLine("Balance: " + players[playerNum].balance);
                 }
             }
         }
@@ -328,7 +318,7 @@ namespace anti_monopoly_simulation
 
         static void unpurchasableCheck(int playerNum)
         {
-            Console.WriteLine("unpurchasableCheck");
+            //Console.WriteLine("unpurchasableCheck");
 
             if (streets[players[playerNum].position].type == "Anti Monopoly")
             {
@@ -387,11 +377,10 @@ namespace anti_monopoly_simulation
         static void ComOrMonCheck(int playerNum)
         {
             int dice = throughDice() + throughDice();
-            Console.WriteLine("Check!");
+            //Console.WriteLine("ComOrMonCheck");
 
             if (players[playerNum].type == "m")
             {
-                Console.WriteLine("Got " + dice);
 
                 switch (dice)
                 {
@@ -425,10 +414,9 @@ namespace anti_monopoly_simulation
                         withdrawMoney(50, playerNum);
                         break;
                     case 10:
-                        Console.WriteLine("Choosed give 25 from competitors!");
                         for (int i = 0; i < players.Length; i++)
                         {
-                            if (players[i].type == "c")
+                            if (players[i].type == "c" && !players[i].bankrupted)
                             {
                                 withdrawMoney(25, i);
                                 players[playerNum].balance = players[playerNum].balance + 25;
@@ -449,7 +437,6 @@ namespace anti_monopoly_simulation
             }
             else
             {
-                Console.WriteLine("Got " + dice);
 
                 switch (dice)
                 {
@@ -461,10 +448,9 @@ namespace anti_monopoly_simulation
                         withdrawMoney(75, playerNum);
                         break;
                     case 4:
-                        Console.WriteLine("Choosed give 25 from monopolists!");
                         for (int i = 0; i < players.Length; i++)
                         {
-                            if (players[i].type == "m")
+                            if (players[i].type == "m" && !players[i].bankrupted)
                             {
                                 withdrawMoney(25, i);
                                 players[playerNum].balance = players[playerNum].balance + 25;
@@ -510,8 +496,7 @@ namespace anti_monopoly_simulation
 
         static int countHowMuchPay(int strNum, int playerNum, int sumOnDice)
         {
-            Console.WriteLine("countHowMuchPay");
-            Console.WriteLine(streets[strNum].type);
+            //Console.WriteLine("countHowMuchPay");
 
             if (streets[strNum].type == "Transport")
             {
@@ -526,18 +511,15 @@ namespace anti_monopoly_simulation
                                 have++;
                         }
 
-                        Console.WriteLine("StrNum: " + strNum + "; playerNum: " + playerNum + "; 1 income: ");
                         return (int)(40 * Math.Pow(2, have));
                     }
                     else
                     {
-                        Console.WriteLine("StrNum: " + strNum + "; playerNum: " + playerNum + "; 2 income: ");
                         return 40;
                     }
                 }
                 else
                 {
-                    Console.WriteLine("StrNum: " + strNum + "; playerNum: " + playerNum + "; 3 income: ");
                     return 20;
                 }
             }
@@ -547,18 +529,15 @@ namespace anti_monopoly_simulation
                 {
                     if (streets[players[playerNum].position].monopolized)
                     {
-                        Console.WriteLine("StrNum: " + strNum + "; playerNum: " + playerNum + "; 4 income: ");
                         return sumOnDice * 10;
                     }
                     else
                     {
-                        Console.WriteLine("StrNum: " + strNum + "; playerNum: " + playerNum + "; 5 income: ");
                         return sumOnDice * 4;
                     }
                 }
                 else
                 {
-                    Console.WriteLine("StrNum: " + strNum + "; playerNum: " + playerNum + "; 6 income: ");
                     return sumOnDice * 4;
                 }
             }
@@ -570,29 +549,24 @@ namespace anti_monopoly_simulation
                 {
                     if (streets[strNum].monopolized)
                     {
-                        Console.WriteLine("StrNum: " + strNum + "; playerNum: " + playerNum + "; 7 income: ");
                         return (int)((streets[strNum].cost + (streets[strNum].houses * 50 * level)) * 0.2);
                     }
                     else
                     {
-                        Console.WriteLine("StrNum: " + strNum + "; playerNum: " + playerNum + "; 8 income: ");
                         return (int)((streets[strNum].cost + (streets[strNum].houses * 50 * level)) * 0.1);
                     }
                 }
                 else
                 {
-                    Console.WriteLine("StrNum: " + strNum + "; playerNum: " + playerNum + "; 9 income: ");
                     return (int)((streets[strNum].cost + (streets[strNum].houses * 50 * level)) * 0.1);
                 }
             }
-
-            //return 0;
         }
 
 
         static void streetsProcedure(int playerNum, int sumOnDice)
         {
-            Console.WriteLine("streetsProcedure");
+            //Console.WriteLine("streetsProcedure");
 
             if (!streets[players[playerNum].position].mortgaged)
             {
@@ -630,7 +604,7 @@ namespace anti_monopoly_simulation
 
         static void checkWhatToDo(int playerNum, int sumOnDice)
         {
-            Console.WriteLine("checkWhatToDo");
+            //Console.WriteLine("checkWhatToDo");
 
             if (streets[players[playerNum].position].clas == "Unpurchasable")
                 unpurchasableCheck(playerNum);
@@ -645,7 +619,7 @@ namespace anti_monopoly_simulation
 
         static void addHouses(int i, int n)
         {
-            Console.WriteLine("addHouses");
+            //Console.WriteLine("addHouses");
 
             int level = (players[i].streetsOwned[n].number / 10) + 1;
 
@@ -657,7 +631,6 @@ namespace anti_monopoly_simulation
                     players[i].houses[n] = players[i].houses[n] + 1;
                     players[i].totHousesBought++;
                     withdrawMoney(50, i);
-                    Console.WriteLine("Added house 50");
                 }
                 if (level == 2)
                 {
@@ -665,7 +638,6 @@ namespace anti_monopoly_simulation
                     players[i].houses[n] = players[i].houses[n] + 1;
                     players[i].totHousesBought++;
                     withdrawMoney(100, i);
-                    Console.WriteLine("Added house 100");
                 }
                 if (level == 3)
                 {
@@ -673,7 +645,6 @@ namespace anti_monopoly_simulation
                     players[i].houses[n] = players[i].houses[n] + 1;
                     players[i].totHousesBought++;
                     withdrawMoney(150, i);
-                    Console.WriteLine("Added house 150");
                 }
                 if (level == 4)
                 {
@@ -681,7 +652,6 @@ namespace anti_monopoly_simulation
                     players[i].houses[n] = players[i].houses[n] + 1;
                     players[i].totHousesBought++;
                     withdrawMoney(200, i);
-                    Console.WriteLine("Added house 200");
                 }
             }
         }
@@ -689,11 +659,10 @@ namespace anti_monopoly_simulation
 
         static void checkImprisoment(int i, int dice1, int dice2)
         {
-            Console.WriteLine("checjImrisoment");
+            //Console.WriteLine("checkImrisoment");
 
             if (players[i].imprisoned)
             {
-                Console.WriteLine("Imprisoned!");
                 if (players[i].balance < 50 && players[i].inThePrison < 2)
                 {
                     if (dice1 == dice2)
@@ -718,7 +687,7 @@ namespace anti_monopoly_simulation
 
         static void proceedMortgages(int i)
         {
-            Console.WriteLine("proceedMortgages");
+            //Console.WriteLine("proceedMortgages");
 
             if (players[i].streetsMortgaged.Count > 0)
             {
@@ -766,7 +735,7 @@ namespace anti_monopoly_simulation
 
         static void buyHouse(int i)
         {
-            Console.WriteLine("buyHouse");
+            //Console.WriteLine("buyHouse");
 
 
             if (players[i].type == "c")
@@ -846,57 +815,22 @@ namespace anti_monopoly_simulation
 
         static void makeTurn(int pAmount)
         {
-            Console.WriteLine(" ");
-            Console.WriteLine("makeTurn");
+            //Console.WriteLine("makeTurn");
 
             for (int i = 0; i < pAmount; i++)
             {
-                if (players[i].bankrupted)
+                if (!players[i].bankrupted)
                 {
-                    Console.WriteLine("Bankrupted!");
-                    continue;
-                }
+                    int dice1 = throughDice();
+                    int dice2 = throughDice();
+                    int sum = dice1 + dice2;
 
-                int dice1 = throughDice();
-                int dice2 = throughDice();
-                int sum = dice1 + dice2;
+                    checkImprisoment(i, dice1, dice2);
 
-                checkImprisoment(i, dice1, dice2);
-
-                if (players[i].imprisoned)
-                {
-                    continue;
-                }
-
-                Console.WriteLine("Go " + sum + " steps. Position: " + players[i].position);
-
-                if (players[i].position + dice1 + dice2 < 40)
-                {
-                    players[i].position = players[i].position + dice1 + dice2;
-                }
-                else if (players[i].position + dice1 + dice2 == 40)
-                {
-                    players[i].position = 0;
-                    players[i].balance = players[i].balance + 100;
-                    players[i].circlesDone++;
-                }
-                else
-                {
-                    players[i].position = players[i].position + dice1 + dice2 - 40;
-                    players[i].balance = players[i].balance + 100;
-                    players[i].circlesDone++;
-                }
-
-                checkWhatToDo(i, sum);
-                Console.WriteLine("Done streets");
-
-                if (dice1 == dice2)
-                {
-                    dice1 = throughDice();
-                    dice2 = throughDice();
-                    sum = dice1 + dice2;
-
-                    Console.WriteLine("Go " + sum + " steps. Position: " + players[i].position);
+                    if (players[i].imprisoned)
+                    {
+                        continue;
+                    }
 
                     if (players[i].position + dice1 + dice2 < 40)
                     {
@@ -916,24 +850,45 @@ namespace anti_monopoly_simulation
                     }
 
                     checkWhatToDo(i, sum);
-                    Console.WriteLine("Done streets");
+
+                    if (dice1 == dice2)
+                    {
+                        dice1 = throughDice();
+                        dice2 = throughDice();
+                        sum = dice1 + dice2;
+
+                        if (players[i].position + dice1 + dice2 < 40)
+                        {
+                            players[i].position = players[i].position + dice1 + dice2;
+                        }
+                        else if (players[i].position + dice1 + dice2 == 40)
+                        {
+                            players[i].position = 0;
+                            players[i].balance = players[i].balance + 100;
+                            players[i].circlesDone++;
+                        }
+                        else
+                        {
+                            players[i].position = players[i].position + dice1 + dice2 - 40;
+                            players[i].balance = players[i].balance + 100;
+                            players[i].circlesDone++;
+                        }
+
+                        checkWhatToDo(i, sum);
+                    }
+
+                    proceedMortgages(i);
+
+                    buyHouse(i);
+                    //Console.WriteLine(i + ") player done! Position: " + players[i].position + "; balance" + players[i].balance);
                 }
-
-
-                proceedMortgages(i);
-
-
-                buyHouse(i);
-
-
-                Console.WriteLine(i + ") player done! Position: " + players[i].position + "; balance" + players[i].balance);
             }
         }
 
 
         static void checkWinner()
         {
-            Console.WriteLine("checkWinner");
+            //Console.WriteLine("checkWinner");
 
             for (int i = 0; i < players.Length; i++)
             {
@@ -945,17 +900,301 @@ namespace anti_monopoly_simulation
                     {
                         int inc = countHowMuchPay(players[i].streetsOwned[j].number, i, throughDice() + throughDice());
                         totalIncome = totalIncome + inc;
-                        Console.WriteLine("Type: " + players[i].streetsOwned[j].type + "; houses: " + players[i].streetsOwned[j].houses + "; income: " + inc);
                     }
 
-                    Console.WriteLine("totalIncome " + totalIncome);
                     int score = players[i].balance + totalIncome;
-                    Console.WriteLine("Player " + i + " " + players[i].type + " has " + score + " score");
+                    Console.WriteLine("Player " + i + " type: " + players[i].type + " has " + score + " score");
                 }
                 else
                 {
-                    Console.WriteLine("Player " + i + " " + players[i].type + " bankrupted!");
+                    Console.WriteLine("Player " + i + " type: " + players[i].type + " bankrupted!");
                 }
+            }
+        }
+
+
+        static void checkAllBankrupted(out bool onlyLeft, out int left)
+        {
+            onlyLeft = false;
+            left = -1;
+            int notBankrupted = players.Length;
+
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].bankrupted)
+                    notBankrupted--;
+                else
+                    left = i;
+            }
+
+            if (notBankrupted <= 1)
+                onlyLeft = true;
+        }
+        static void checkAllBankrupted(out bool onlyLeft, out string whoLeft, int cAmount)
+        {
+            onlyLeft = false;
+            whoLeft = "";
+            int cBancrupted = 0, mBancrupted = 0;
+
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].bankrupted && players[i].type=="m")
+                    mBancrupted++;
+                else if (players[i].bankrupted)
+                    cBancrupted++;
+            }
+
+            if (cBancrupted == cAmount)
+            {
+                onlyLeft = true;
+                whoLeft = "m";
+            }
+            else if (mBancrupted == players.Length - cAmount)
+            {
+                onlyLeft = true;
+                whoLeft = "c";
+            }
+            else if(mBancrupted+cBancrupted==players.Length)
+            {
+                onlyLeft = true;
+                whoLeft = "n";
+            }
+        }
+
+
+        static void simulateOneSimulation(int type) 
+        {
+            Console.WriteLine("Input how much players do you want: ");
+            int playersAmount = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Input how much competitors do you want: ");
+            int competitorsAmount = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Input how much additional money should bots have to purchase anything: ");
+            shouldHave = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Input which end do you want: ");
+            Console.WriteLine("1 - only one player left, all others bankrupted");
+            Console.WriteLine("2 - all competitors bankrupted or all monopolists bankrupted");
+            int endType = int.Parse(Console.ReadLine());
+
+            initializePlayers(playersAmount, competitorsAmount);
+
+            Console.WriteLine(" ");
+            Console.WriteLine("Players data");
+            Console.WriteLine(" ");
+            checkPlayers();
+
+            string ans = "y";
+            int totalSteps = 0;
+
+            while (ans == "y")
+            {
+                int steps = 1000;
+                if (type == 1)
+                {
+                    Console.WriteLine("Input how much steps do you want to do: ");
+                    steps = int.Parse(Console.ReadLine());
+                }
+
+                bool onlyLeft = false;
+                string whoLeft = "";
+                int left = -1;
+
+                for (int i = 0; i < steps; i++)
+                {
+                    makeTurn(playersAmount);
+                    totalSteps++;
+
+                    if (endType == 1)
+                        checkAllBankrupted(out onlyLeft, out left);
+                    else
+                        checkAllBankrupted(out onlyLeft,out whoLeft,competitorsAmount);
+
+                    if (onlyLeft)
+                        break;
+
+                    Console.WriteLine(totalSteps + " turn done!");
+                }
+
+                if (onlyLeft && endType == 1)
+                {
+                    ans = "n";
+                    if (left != -1)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Everyone except player " + left + " bankrupted!");
+                        Console.WriteLine("");
+                    }
+                    else 
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Everyone bankrupted!");
+                        Console.WriteLine("");
+                    }
+
+                    Console.WriteLine("Players data");
+                    Console.WriteLine(" ");
+                    checkPlayers();
+                }
+                else if (onlyLeft && endType == 2)
+                {
+                    ans = "n";
+                    if (whoLeft == "m") 
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("All competitors bankrupted!");
+                        Console.WriteLine("");
+                    }
+                    else if (whoLeft == "c")
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("All monopolists bankrupted!");
+                        Console.WriteLine("");
+                    }
+                    else if (whoLeft == "n")
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Everyone bankrupted!");
+                        Console.WriteLine("");
+                    }
+
+                    Console.WriteLine("Players data");
+                    Console.WriteLine(" ");
+                    checkPlayers();
+                }
+                else 
+                {
+                    Console.WriteLine(" ");
+                    Console.WriteLine("Players data");
+                    Console.WriteLine(" ");
+                    checkPlayers();
+
+                    if (type == 2) 
+                    {
+                        Console.WriteLine(" ");
+                        Console.WriteLine("Who is winner");
+                        Console.WriteLine(" ");
+                        checkWinner();
+                    }
+
+                    Console.WriteLine("Do you wish to continue this simulation?");
+                    Console.WriteLine("y - yes; n - no;");
+                    ans = Console.ReadLine();
+                    while (ans != "y" && ans != "n")
+                    {
+                        Console.WriteLine("Wrong input! Please enter existing command: ");
+                        ans = Console.ReadLine();
+                    }
+                }
+            }
+
+            Console.WriteLine(" ");
+            Console.WriteLine("Who is winner");
+            Console.WriteLine(" ");
+            checkWinner();
+        }
+
+
+        static void multipleSimulations() 
+        {
+            Console.WriteLine("Input how much players do you want: ");
+            int playersAmount = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Input how much competitors do you want: ");
+            int competitorsAmount = int.Parse(Console.ReadLine());
+
+            initializePlayers(playersAmount, competitorsAmount);
+
+            Console.WriteLine("Input how much additional money should bots have to purchase anything: ");
+            shouldHave = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Input which end do you want: ");
+            Console.WriteLine("1 - only one player left, all others bankrupted");
+            Console.WriteLine("2 - all competitors bankrupted or all monopolists bankrupted");
+            int endType = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("How many simulations do you want: ");
+            int simAmount = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Input how much steps do you want to do in each simulation: ");
+            int steps = int.Parse(Console.ReadLine());
+
+            for (int j = 1; j < simAmount+1; j++) 
+            {
+                readFile();
+                initializePlayers(playersAmount, competitorsAmount);
+
+                bool onlyLeft = false;
+                string whoLeft = "";
+                int left = -1;
+
+                Console.WriteLine("  ");
+                Console.WriteLine("-------");
+                Console.WriteLine("  ");
+                Console.WriteLine("Simulation "+j);
+                Console.WriteLine("  ");
+
+                int stepsDone = 0;
+
+                for (int i = 0; i < steps; i++)
+                {
+                    makeTurn(playersAmount);
+
+                    stepsDone++;
+
+                    if (endType == 1)
+                        checkAllBankrupted(out onlyLeft, out left);
+                    else
+                        checkAllBankrupted(out onlyLeft, out whoLeft, competitorsAmount);
+
+                    if (onlyLeft)
+                        break;
+                }
+
+                Console.WriteLine("Steps done: " + stepsDone);
+
+                if (onlyLeft && endType == 1)
+                {
+                    if (left != -1)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Everyone except player " + left + " bankrupted!");
+                        Console.WriteLine("");
+                    }
+                    else
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Everyone bankrupted!");
+                        Console.WriteLine("");
+                    }
+                }
+                else if (onlyLeft && endType == 2)
+                {
+                    if (whoLeft == "m")
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("All competitors bankrupted!");
+                        Console.WriteLine("");
+                    }
+                    else if (whoLeft == "c")
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("All monopolists bankrupted!");
+                        Console.WriteLine("");
+                    }
+                    else if (whoLeft == "n")
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Everyone bankrupted!");
+                        Console.WriteLine("");
+                    }
+                }
+
+                Console.WriteLine(" ");
+                Console.WriteLine("Who is winner");
+                Console.WriteLine(" ");
+                checkWinner();   
             }
         }
 
@@ -963,78 +1202,59 @@ namespace anti_monopoly_simulation
         static void Main(string[] args)
         {
             rand = new Random();
-            shouldHave = 200;
-            //DONE! CH! Доделать если монополист выкупает mortgaged улицу
-            //и у него 2 штуки одинакового типа то нужно сделать их
-            //монополизироваными снова
-
-            //DONE! CH! Также оно не правильно выщитывает цену которую нужно 
-            //платить на транспортных компаниях монополистаи
-
-            //DONE! CH! Также оно отдельно кидает кубики для газа и электрикт
-            //хотя нужно брать те которые выкинуты для ходьбы
-
-            //DONE! CH! Также нужно чтобы бот продавал не первую улицк
-            //на mortgaged а улицу с наименьшим доходом
-
-            //DONE! CH! Также Сделать отдельную процедуру по подсчету сколько нужно платить игроку
-
-            //DONE! CH! Также проверить com or mon
-
-            //DONE! CH! Также выделить покупку домиков и mortgaged улици и 
-            // CH! тбрьму в отднльные
-            //процедуры
-
-            //DONE! CH! Также добавить вариант выхода из тюрьмы кинувши два одинаковых кубика
-
-            //Также сделать нормальный интерфейс
-
-
-            readFile();
             //outputStreetData();
             //Console.ReadLine();
+            shouldHave = 200;
+            bool skip = false;
 
-            Console.WriteLine("Input how much players do you want: ");
-            int playersAmount = int.Parse(Console.ReadLine());
-            //string check = Console.ReadLine();
-            //check = Console.ReadLine();
-
-            Console.WriteLine("Input how much competitors do you want: ");
-            int competitorsAmount = int.Parse(Console.ReadLine());
-
-            initializePlayers(playersAmount, competitorsAmount);
-
-            Console.WriteLine(" ");
-            Console.WriteLine("Players data");
-            checkPlayers();
-
-            //outputStreetData();
-
-            Console.WriteLine("Input how much steps do you want to do: ");
-            int steps = int.Parse(Console.ReadLine());
-
-            for (int i = 0; i < steps; i++)
+            string ans = "";
+            while (ans != "x")
             {
-                Console.WriteLine(" ");
-                Console.WriteLine("-----");
+                readFile();
 
-                makeTurn(playersAmount);
+                if (!skip)
+                {
+                    Console.WriteLine(" ");
+                    Console.WriteLine("-----");
+                    Console.WriteLine(" ");
+                    Console.WriteLine("What do you wish to do?");
+                    Console.WriteLine("x - exit the program");
+                    Console.WriteLine("s - simulate one simulation with descritptions");
+                    Console.WriteLine("m - multiple simulations with results");
+                    Console.WriteLine("e - simulate simulation to the end of it");
+                    Console.WriteLine("c - check something");
 
-                Console.WriteLine(i + " turn done!");
+                    ans = Console.ReadLine();
+                }
+
+                switch (ans) 
+                {
+                    case "x":
+                        skip = false;
+                        break;
+                    case "s":
+                        skip = false;
+                        simulateOneSimulation(1);
+                        break;
+                    case "m":
+                        skip = false;
+                        multipleSimulations();
+                        break;
+                    case "c":
+                        skip = false;
+                        checkTransport();
+                        break;
+                    case "e":
+                        skip = false;
+                        simulateOneSimulation(2);
+                        break;
+                    default:
+                        Console.WriteLine("Wrong input! Please enter existing command: ");
+                        ans = Console.ReadLine();
+                        skip = true;
+                        break;
+                }
             }
-
-            Console.WriteLine(" ");
-            Console.WriteLine("Players data");
-            checkPlayers();
-
-            //Console.WriteLine(" ");
-            //Console.WriteLine("Streets data");
-            //outputStreetData();
-
-            // checkTransport();
-            Console.WriteLine(" ");
-            Console.WriteLine("Who is winner");
-            checkWinner();
 
             Console.ReadLine();
         }
