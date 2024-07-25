@@ -92,6 +92,7 @@ namespace anti_monopoly_simulation
         static Random rand;
         static Player[] players;
         static int shouldHave;
+        static string showInfo;
 
         static void readFile()
         {
@@ -378,6 +379,9 @@ namespace anti_monopoly_simulation
         {
             int dice = throughDice() + throughDice();
             //Console.WriteLine("ComOrMonCheck");
+
+            if (showInfo == "y")
+                Console.WriteLine("Player " + playerNum + ") got check. Dice " + dice);
 
             if (players[playerNum].type == "m")
             {
@@ -817,6 +821,9 @@ namespace anti_monopoly_simulation
         {
             //Console.WriteLine("makeTurn");
 
+            if (showInfo == "y")
+                Console.WriteLine("");
+
             for (int i = 0; i < pAmount; i++)
             {
                 if (!players[i].bankrupted)
@@ -824,6 +831,9 @@ namespace anti_monopoly_simulation
                     int dice1 = throughDice();
                     int dice2 = throughDice();
                     int sum = dice1 + dice2;
+
+                    if (showInfo == "y")
+                        Console.WriteLine("Player "+i+") position: " + players[i].position+"; balance: " + players[i].balance+"; dice: "+sum);
 
                     checkImprisoment(i, dice1, dice2);
 
@@ -857,6 +867,9 @@ namespace anti_monopoly_simulation
                         dice2 = throughDice();
                         sum = dice1 + dice2;
 
+                        if (showInfo == "y")
+                            Console.WriteLine("Player " + i + ") position: " + players[i].position + "; balance: " + players[i].balance + "; dice: " + sum);
+
                         if (players[i].position + dice1 + dice2 < 40)
                         {
                             players[i].position = players[i].position + dice1 + dice2;
@@ -880,7 +893,6 @@ namespace anti_monopoly_simulation
                     proceedMortgages(i);
 
                     buyHouse(i);
-                    //Console.WriteLine(i + ") player done! Position: " + players[i].position + "; balance" + players[i].balance);
                 }
             }
         }
@@ -888,7 +900,9 @@ namespace anti_monopoly_simulation
 
         static void checkWinner()
         {
-            //Console.WriteLine("checkWinner");
+            //Console.WriteLine("checkWinner1");
+
+            int n = -1, maxS = 0;
 
             for (int i = 0; i < players.Length; i++)
             {
@@ -904,17 +918,84 @@ namespace anti_monopoly_simulation
 
                     int score = players[i].balance + totalIncome;
                     Console.WriteLine("Player " + i + " type: " + players[i].type + " has " + score + " score");
+
+                    if (score > maxS) 
+                    {
+                        maxS = score;
+                        n = i;
+                    }
                 }
                 else
                 {
                     Console.WriteLine("Player " + i + " type: " + players[i].type + " bankrupted!");
                 }
             }
+
+            if (n == -1)
+            {
+                Console.WriteLine("Nobody won!");
+            }
+            else
+            {
+                if (players[n].type == "m")
+                    Console.WriteLine("Monopolist with number "+n+" won!");
+                else
+                    Console.WriteLine("Competitor with number " + n + " won!");
+            }
+        }
+        static int checkWinner(int n)
+        {
+            //Console.WriteLine("checkWinner2");
+
+            int maxS = 0;
+
+            for (int i = 0; i < players.Length; i++)
+            {
+                int totalIncome = 0;
+
+                if (!players[i].bankrupted)
+                {
+                    for (int j = 0; j < players[i].streetsOwned.Count; j++)
+                    {
+                        int inc = countHowMuchPay(players[i].streetsOwned[j].number, i, throughDice() + throughDice());
+                        totalIncome = totalIncome + inc;
+                    }
+
+                    int score = players[i].balance + totalIncome;
+                    Console.WriteLine("Player " + i + " type: " + players[i].type + " has " + score + " score");
+
+                    if (score > maxS)
+                    {
+                        maxS = score;
+                        n = i;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Player " + i + " type: " + players[i].type + " bankrupted!");
+                }
+            }
+
+            if (n == -1)
+            {
+                Console.WriteLine("Nobody won!");
+            }
+            else
+            {
+                if (players[n].type == "m")
+                    Console.WriteLine("Monopolist with number " + n + " won!");
+                else
+                    Console.WriteLine("Competitor with number " + n + " won!");
+            }
+
+            return n;
         }
 
 
         static void checkAllBankrupted(out bool onlyLeft, out int left)
         {
+            //Console.WriteLine("checkAllBankrupted1");
+
             onlyLeft = false;
             left = -1;
             int notBankrupted = players.Length;
@@ -932,6 +1013,8 @@ namespace anti_monopoly_simulation
         }
         static void checkAllBankrupted(out bool onlyLeft, out string whoLeft, int cAmount)
         {
+            //Console.WriteLine("checkAllBankrupted2");
+
             onlyLeft = false;
             whoLeft = "";
             int cBancrupted = 0, mBancrupted = 0;
@@ -964,6 +1047,10 @@ namespace anti_monopoly_simulation
 
         static void simulateOneSimulation(int type) 
         {
+            Console.WriteLine("Do you want to see additional information: ");
+            Console.WriteLine("y - yes; n - no;");
+            showInfo = Console.ReadLine();
+
             Console.WriteLine("Input how much players do you want: ");
             int playersAmount = int.Parse(Console.ReadLine());
 
@@ -1098,6 +1185,10 @@ namespace anti_monopoly_simulation
 
         static void multipleSimulations() 
         {
+            Console.WriteLine("Do you want to see additional information: ");
+            Console.WriteLine("y - yes; n - no;");
+            string showInfo2 = Console.ReadLine();
+
             Console.WriteLine("Input how much players do you want: ");
             int playersAmount = int.Parse(Console.ReadLine());
 
@@ -1119,6 +1210,8 @@ namespace anti_monopoly_simulation
 
             Console.WriteLine("Input how much steps do you want to do in each simulation: ");
             int steps = int.Parse(Console.ReadLine());
+
+            int comWon = 0, monWon = 0;
 
             for (int j = 1; j < simAmount+1; j++) 
             {
@@ -1153,6 +1246,9 @@ namespace anti_monopoly_simulation
                 }
 
                 Console.WriteLine("Steps done: " + stepsDone);
+
+                if (showInfo2 == "y")
+                    checkPlayers();
 
                 if (onlyLeft && endType == 1)
                 {
@@ -1194,23 +1290,32 @@ namespace anti_monopoly_simulation
                 Console.WriteLine(" ");
                 Console.WriteLine("Who is winner");
                 Console.WriteLine(" ");
-                checkWinner();   
+
+                int n=checkWinner(-1);
+                if (players[n].type == "m")
+                    monWon++;
+                else
+                    comWon++;
             }
+
+            Console.WriteLine(" ");
+            Console.WriteLine("Total results");
+            Console.WriteLine("Competitors won "+comWon+" times!");
+            Console.WriteLine("Monopolists won " + monWon + " times!");
         }
 
 
         static void Main(string[] args)
         {
             rand = new Random();
-            //outputStreetData();
-            //Console.ReadLine();
-            shouldHave = 200;
             bool skip = false;
 
             string ans = "";
             while (ans != "x")
             {
                 readFile();
+                shouldHave = 200;
+                showInfo = "n";
 
                 if (!skip)
                 {
@@ -1255,8 +1360,6 @@ namespace anti_monopoly_simulation
                         break;
                 }
             }
-
-            Console.ReadLine();
         }
     }
 }
