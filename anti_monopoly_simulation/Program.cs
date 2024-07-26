@@ -1188,6 +1188,7 @@ namespace anti_monopoly_simulation
             Console.WriteLine("Do you want to see additional information: ");
             Console.WriteLine("y - yes; n - no;");
             string showInfo2 = Console.ReadLine();
+            //string showInfo2 = "n";
 
             Console.WriteLine("Input how much players do you want: ");
             int playersAmount = int.Parse(Console.ReadLine());
@@ -1204,9 +1205,11 @@ namespace anti_monopoly_simulation
             Console.WriteLine("1 - only one player left, all others bankrupted");
             Console.WriteLine("2 - all competitors bankrupted or all monopolists bankrupted");
             int endType = int.Parse(Console.ReadLine());
+            //int endType = 2;
 
             Console.WriteLine("How many simulations do you want: ");
             int simAmount = int.Parse(Console.ReadLine());
+            //int simAmount = 10000;
 
             Console.WriteLine("Input how much steps do you want to do in each simulation: ");
             int steps = int.Parse(Console.ReadLine());
@@ -1304,6 +1307,9 @@ namespace anti_monopoly_simulation
             Console.WriteLine("Monopolists won " + monWon + " times!");
         }
 
+        //Add modifications to balance chances of competitors and monopolists
+        //Like only monopolists pay taxes and competitors get small bonuses
+        //Change comOrMon
 
         static void Main(string[] args)
         {
