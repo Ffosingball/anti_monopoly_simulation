@@ -1442,9 +1442,6 @@ namespace anti_monopoly_simulation
             Console.WriteLine("Monopolists won " + monWon + " times!");
         }
 
-        //Add modifications to balance chances of competitors and monopolists
-        //Like only monopolists pay taxes and competitors get small bonuses
-        //Change comOrMon
 
         static void Main(string[] args)
         {
