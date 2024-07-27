@@ -93,6 +93,7 @@ namespace anti_monopoly_simulation
         static Player[] players;
         static int shouldHave;
         static string showInfo;
+        static bool modifiedRules;
 
         static void readFile()
         {
@@ -201,7 +202,52 @@ namespace anti_monopoly_simulation
 
         static void checkTransport()
         {
-            
+            modifiedRules = true;
+
+            players=new Player[2];
+            players[0] = new Player("m", 1500);
+            players[1] = new Player("c", 1500);
+            players[0].position = 4;
+            players[1].position = 4;
+
+            checkWhatToDo(0,0);
+            checkWhatToDo(1, 0);
+
+            Console.WriteLine(" ");
+            Console.WriteLine("0) balance: "+players[0].balance);
+            Console.WriteLine("1) balance: " + players[1].balance);
+
+            players[0].position = 38;
+            players[1].position = 38;
+
+            checkWhatToDo(0, 0);
+            checkWhatToDo(1, 0);
+
+            Console.WriteLine(" ");
+            Console.WriteLine("0) balance: " + players[0].balance);
+            Console.WriteLine("1) balance: " + players[1].balance);
+
+            modifiedRules = false;
+
+            players[0].position = 4;
+            players[1].position = 4;
+
+            checkWhatToDo(0, 0);
+            checkWhatToDo(1, 0);
+
+            Console.WriteLine(" ");
+            Console.WriteLine("0) balance: " + players[0].balance);
+            Console.WriteLine("1) balance: " + players[1].balance);
+
+            players[0].position = 38;
+            players[1].position = 38;
+
+            checkWhatToDo(0, 0);
+            checkWhatToDo(1, 0);
+
+            Console.WriteLine(" ");
+            Console.WriteLine("0) balance: " + players[0].balance);
+            Console.WriteLine("1) balance: " + players[1].balance);
         }
 
 
@@ -344,33 +390,88 @@ namespace anti_monopoly_simulation
             }
             else if (streets[players[playerNum].position].type == "Property Tax")
             {
-                withdrawMoney(75, playerNum);
+                if (modifiedRules)
+                {
+                    if (players[playerNum].type == "m")
+                    {
+                        withdrawMoney(75, playerNum);
+                    }
+                    else
+                    {
+                        int dice = throughDice();
+
+                        if (dice == 1)
+                            players[playerNum].balance = players[playerNum].balance + 10;
+                        else if (dice == 2)
+                            players[playerNum].balance = players[playerNum].balance + 20;
+                    }
+                }
+                else
+                {
+                    withdrawMoney(75, playerNum);
+                }
             }
             else if (streets[players[playerNum].position].type == "Income Tax")
             {
-                double pay = players[playerNum].balance;
-
-                if (players[playerNum].type == "m")
-                    pay = pay * 0.2;
-                else
-                    pay = pay * 0.1;
-
-                double addCost = 0;
-
-                if (players[playerNum].streetsOwned.Count > 0)
+                if (modifiedRules)
                 {
-                    for (int i = 0; i < players[playerNum].streetsOwned.Count; i++)
+                    if (players[playerNum].type == "m")
                     {
-                        addCost = addCost + players[playerNum].streetsOwned[i].cost;
-                    }
-                    addCost = addCost * 0.1;
-                    pay = pay + addCost;
-                }
+                        double pay = players[playerNum].balance * 0.2;
 
-                if (pay < 200)
-                    withdrawMoney((int)pay, playerNum);
+                        double addCost = 0;
+
+                        if (players[playerNum].streetsOwned.Count > 0)
+                        {
+                            for (int i = 0; i < players[playerNum].streetsOwned.Count; i++)
+                            {
+                                addCost = addCost + players[playerNum].streetsOwned[i].cost;
+                            }
+                            addCost = addCost * 0.1;
+                            pay = pay + addCost;
+                        }
+
+                        if (pay < 200)
+                            withdrawMoney((int)pay, playerNum);
+                        else
+                            withdrawMoney(200, playerNum);
+                    }
+                    else
+                    {
+                        int dice = throughDice();
+
+                        if (dice == 1)
+                            players[playerNum].balance = players[playerNum].balance + 25;
+                        else if (dice == 2)
+                            players[playerNum].balance = players[playerNum].balance + 50;
+                    }
+                }
                 else
-                    withdrawMoney(200, playerNum);
+                {
+                    double pay = players[playerNum].balance;
+
+                    if (players[playerNum].type == "m")
+                        pay = pay * 0.2;
+                    else
+                        pay = pay * 0.1;
+
+                    double addCost = 0;
+
+                    if (players[playerNum].streetsOwned.Count > 0)
+                    {
+                        for (int i = 0; i < players[playerNum].streetsOwned.Count; i++)
+                        {
+                            addCost = addCost + players[playerNum].streetsOwned[i].cost;
+                        }
+                        addCost = addCost * 0.1;
+                        pay = pay + addCost;
+                    }
+
+                    if (pay < 200)
+                        withdrawMoney((int)pay, playerNum);
+                    else
+                        withdrawMoney(200, playerNum);
+                }
             }
         }
 
@@ -415,7 +516,10 @@ namespace anti_monopoly_simulation
                         streetsProcedure(playerNum, dice);
                         break;
                     case 9:
-                        withdrawMoney(50, playerNum);
+                        if (modifiedRules)
+                            withdrawMoney(75, playerNum);
+                        else
+                            withdrawMoney(50, playerNum);
                         break;
                     case 10:
                         for (int i = 0; i < players.Length; i++)
@@ -432,7 +536,10 @@ namespace anti_monopoly_simulation
                         players[playerNum].imprisoned = true;
                         break;
                     case 12:
-                        withdrawMoney(25, playerNum);
+                        if (modifiedRules)
+                            withdrawMoney(75, playerNum);
+                        else
+                            withdrawMoney(25, playerNum);
                         break;
                     default:
                         Console.WriteLine("In ComOrMonSomething went wrong " + dice);
@@ -449,7 +556,10 @@ namespace anti_monopoly_simulation
                         streetsProcedure(playerNum, dice);
                         break;
                     case 3:
-                        withdrawMoney(75, playerNum);
+                        if(modifiedRules)
+                            withdrawMoney(25, playerNum);
+                        else
+                            withdrawMoney(75, playerNum);
                         break;
                     case 4:
                         for (int i = 0; i < players.Length; i++)
@@ -466,7 +576,10 @@ namespace anti_monopoly_simulation
                         streetsProcedure(playerNum, dice);
                         break;
                     case 6:
-                        withdrawMoney(25, playerNum);
+                        if (modifiedRules)
+                            players[playerNum].balance = players[playerNum].balance + 25;
+                        else
+                            withdrawMoney(25, playerNum);
                         break;
                     case 7:
                         players[playerNum].position = 24;
@@ -481,7 +594,10 @@ namespace anti_monopoly_simulation
                         players[playerNum].circlesDone++;
                         break;
                     case 10:
-                        withdrawMoney(50, playerNum);
+                        if (modifiedRules)
+                            players[playerNum].balance = players[playerNum].balance + 25;
+                        else
+                            withdrawMoney(50, playerNum);
                         break;
                     case 11:
                         players[playerNum].balance = players[playerNum].balance + 50;
@@ -1051,6 +1167,14 @@ namespace anti_monopoly_simulation
             Console.WriteLine("y - yes; n - no;");
             showInfo = Console.ReadLine();
 
+            Console.WriteLine("Do you want modified rules or default: ");
+            Console.WriteLine("m - modified; d - default;");
+            string ansT = Console.ReadLine();
+            if (ansT == "m")
+                modifiedRules = true;
+            else
+                modifiedRules = false;
+
             Console.WriteLine("Input how much players do you want: ");
             int playersAmount = int.Parse(Console.ReadLine());
 
@@ -1190,6 +1314,17 @@ namespace anti_monopoly_simulation
             string showInfo2 = Console.ReadLine();
             //string showInfo2 = "n";
 
+            Console.WriteLine("Do you want modified rules or default: ");
+            Console.WriteLine("m - modified; d - default;");
+            string ans = Console.ReadLine();
+            //string ans = "m";
+            //string ans = "d";
+            if (ans == "m") 
+                modifiedRules = true;
+            else
+                modifiedRules = false;
+
+
             Console.WriteLine("Input how much players do you want: ");
             int playersAmount = int.Parse(Console.ReadLine());
 
@@ -1322,6 +1457,7 @@ namespace anti_monopoly_simulation
                 readFile();
                 shouldHave = 200;
                 showInfo = "n";
+                modifiedRules = false;
 
                 if (!skip)
                 {
